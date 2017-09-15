@@ -3,7 +3,9 @@ const router = express.Router();
 
 // Do work here
 router.get('/', (req, res) => {
-  res.send('Hey! It works!');
+  const obj = {name: 'Smooth'};
+  res.send(req.query);
+  // res.send('Hey! It works!');
 });
 
 module.exports = router;
