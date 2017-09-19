@@ -3,9 +3,13 @@ const router = express.Router();
 
 // Do work here
 router.get('/', (req, res) => {
-  const obj = {name: 'Smooth'};
-  res.send(req.query);
-  // res.send('Hey! It works!');
+  res.render('hello', {
+    name: 'Smooth'
+  });
+});
+
+router.get('/jamil/:a/:b/:c/:d', (req, res) => {
+  res.send(req.params);
 });
 
 module.exports = router;
