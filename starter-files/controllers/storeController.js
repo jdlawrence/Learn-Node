@@ -36,7 +36,15 @@ exports.resize = async (req, res, next) => {
   req.body.photo = `${uuid.v4()}.${extension}`;
   // Now we resize
   const photo = await jimp.read(req.file.buffer);
-  console.log(req.file);
+  await photo.resize(800, jimp.AUTO);
+  await photo.write(`./public/uploads/${req.body.photo}`);
+  next();
+};
+
+exports.getStoreBySlug = async (req, res) => {
+  const store = await Store.findOne({slug: req.params.slug});
+  if (!store) return next();
+  res.render('singleStore', {store});
 };
 
 exports.createStore = async (req, res) => {

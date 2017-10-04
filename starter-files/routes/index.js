@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { addStore, 
-  createStore, 
-  editStore, 
-  getStores, 
+const { addStore,
+  createStore,
+  editStore,
+  getStoreBySlug,
+  getStores,
   resize,
   updateStore,
   upload
@@ -12,6 +13,7 @@ const { catchErrors } = require('../handlers/errorHandlers');
 
 // Do work here
 router.get('/', catchErrors(getStores));
+router.get('/store/:slug', catchErrors(getStoreBySlug));
 router.get('/stores', catchErrors(getStores));
 
 router.get('/add', addStore);
@@ -21,7 +23,11 @@ router.post('/add',
   catchErrors(resize),
   catchErrors(createStore),
 );
-router.post('/add/:id', catchErrors(updateStore));
+
+router.post('/add/:id',
+  upload,
+  catchErrors(resize),
+  catchErrors(updateStore));
 
 router.get('/stores/:id/edit', catchErrors(editStore));
 
