@@ -73,6 +73,10 @@ exports.updateStore = async (req, res) => {
     runValidators: true // Normally the model only checks the required constraints on new models
   }).exec();
   req.flash('success', [`Successfully updated <strong> ${store.name}<strong>`,
-  `<a href="/stores/${store.slug}">View Store → </a>`].join(' '));
+    `<a href="/stores/${store.slug}">View Store → </a>`].join(' '));
   res.redirect(`/store/:id`);
+};
+
+exports.getStoresByTag = async (req, res) => {
+  const stores = await Store.getTagsList();
 };

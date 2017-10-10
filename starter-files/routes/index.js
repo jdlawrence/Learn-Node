@@ -4,6 +4,7 @@ const { addStore,
   createStore,
   editStore,
   getStoreBySlug,
+  getStoresByTag,
   getStores,
   resize,
   updateStore,
@@ -31,5 +32,7 @@ router.post('/add/:id',
 
 router.get('/stores/:id/edit', catchErrors(editStore));
 
+router.get('/tags', catchErrors(getStoresByTag));
+router.get('/tags/:tag', catchErrors(getStoresByTag));
 
 module.exports = router;
