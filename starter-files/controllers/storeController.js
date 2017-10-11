@@ -31,7 +31,7 @@ exports.resize = async (req, res, next) => {
     next();
     return;
   }
-  
+
   const extension = req.file.mimetype.split('/')[1];
   req.body.photo = `${uuid.v4()}.${extension}`;
   // Now we resize
@@ -42,9 +42,9 @@ exports.resize = async (req, res, next) => {
 };
 
 exports.getStoreBySlug = async (req, res) => {
-  const store = await Store.findOne({slug: req.params.slug});
+  const store = await Store.findOne({ slug: req.params.slug });
   if (!store) return next();
-  res.render('singleStore', {store});
+  res.render('singleStore', { store });
 };
 
 exports.createStore = async (req, res) => {
@@ -78,5 +78,7 @@ exports.updateStore = async (req, res) => {
 };
 
 exports.getStoresByTag = async (req, res) => {
-  const stores = await Store.getTagsList();
+  const tags = await Store.getTagsList();
+  const tag = req.params.tag;
+  res.render('tags', { tags, title: 'Tags', tag });
 };

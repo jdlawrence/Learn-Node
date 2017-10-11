@@ -46,10 +46,10 @@ storeSchema.pre('save', async function (next) {
 
   this.slug = slug(this.name);
   const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');
-  
-  const storesWithSlug = await this.constructor.find({slug: slugRegEx});
 
-  if(storesWithSlug.length) {
+  const storesWithSlug = await this.constructor.find({ slug: slugRegEx });
+
+  if (storesWithSlug.length) {
     this.slug = `${this.slug}-${storesWithSlug.length + 1}`;
   }
 
@@ -57,9 +57,11 @@ storeSchema.pre('save', async function (next) {
   // TODO make more resilient so slugs are unique
 });
 
-storeSchema.statics.getTagsList = function() {
+storeSchema.statics.getTagsList = function () {
   return this.aggregate([
-    { $unwind: '$'}
-  ]); 
+    { $unwind: '$tags' },
+    { $group: { _id: '$tags', count: { $sum: 1 } } },
+    { $sort: { count: -1 } }
+  ]);
 };
 module.exports = mongoose.model('Store', storeSchema);
