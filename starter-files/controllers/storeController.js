@@ -41,7 +41,7 @@ exports.resize = async (req, res, next) => {
   next();
 };
 
-exports.getStoreBySlug = async (req, res) => {
+exports.getStoreBySlug = async (req, res, next) => {
   const store = await Store.findOne({ slug: req.params.slug });
   if (!store) return next();
   res.render('singleStore', { store });
@@ -73,12 +73,15 @@ exports.updateStore = async (req, res) => {
     runValidators: true // Normally the model only checks the required constraints on new models
   }).exec();
   req.flash('success', [`Successfully updated <strong> ${store.name}<strong>`,
-    `<a href="/stores/${store.slug}">View Store → </a>`].join(' '));
-  res.redirect(`/store/:id`);
+    `<a href="/store/${store.slug}">View Store → </a>`].join(' '));
+  res.redirect(`/stores/${store._id}/edit`);
 };
 
 exports.getStoresByTag = async (req, res) => {
-  const tags = await Store.getTagsList();
   const tag = req.params.tag;
-  res.render('tags', { tags, title: 'Tags', tag });
+  const tagQuery = tag || { $exists: true };
+  const tagsPromise = Store.getTagsList();
+  const storesPromise = Store.find({ tags: tagQuery });
+  const [tags, stores] = await Promise.all([tagsPromise, storesPromise]);
+  res.render('tags', { tags, title: 'Tags', tag, stores });
 };
