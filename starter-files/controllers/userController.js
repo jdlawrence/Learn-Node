@@ -15,7 +15,7 @@ exports.validateRegister = (req, res, next) => {
   req.checkBody('name', 'You must supply a name!').notEmpty();
   req.checkBody('email', 'That Email is not valid').isEmail();
   req.sanitizeBody('email').normalizeEmail({
-    remove_dots: false,
+    gmail_remove_dots: false,
     remove_extension: false,
     gmail_remove_subaddress: false
   });
@@ -26,7 +26,6 @@ exports.validateRegister = (req, res, next) => {
   const errors = req.validationErrors();
   if (errors) {
     req.flash('error', errors.map(err => err.msg));
-    console.log('error body', req.body);
     res.render('register', { title: 'Register', body: req.body, flashes: req.flash() });
     return;
   }
@@ -42,5 +41,25 @@ exports.register = async (req, res, next) => {
   await registerPromisified(user, req.body.password);
   next();
 };
+
+exports.account = (req, res) => {
+  res.render('account', {title: 'Edit Your Account'});
+};
+
+exports.updateAccount = async (req, res) => {
+  const updates = {
+    name: req.body.name,
+    email: req.body.email
+  };
+
+  const user = await User.findOneAndUpdate(
+    { _id: req.user._id},
+    { $set: updates }, 
+    { new: true, runValidators: true, context: 'query'}
+  );
+  req.flash('success', 'Updated the profile');
+  res.redirect('/account');
+};
+
 
 
