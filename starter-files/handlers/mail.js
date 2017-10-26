@@ -13,13 +13,14 @@ const transport = nodemailer.createTransport({
   }
 });
 
-transport.sendMail({
-  from: 'Jamil Lawrence <jamil.lawrence@gmail.com>',
-  to: 'jdlawr@gmail.com',
-  subject: 'Just trying things out!',
-  html: 'Hey you are <strong>cool!</strong>',
-  text: 'Hey you are cool!'
-});
+// ** Testing things out ******************
+// transport.sendMail({
+//   from: 'Jamil Lawrence <jamil.lawrence@gmail.com>',
+//   to: 'jdlawr@gmail.com',
+//   subject: 'Just trying things out!',
+//   html: 'Hey you are <strong>cool!</strong>',
+//   text: 'Hey you are cool!'
+// });
 
 const generateHTML = (filename, options = {}) => {
   const html = pug.renderFile(`${__dirname}/../views/email/${filename}.pug`, options);
@@ -27,6 +28,7 @@ const generateHTML = (filename, options = {}) => {
   // return inlined;
   return html;
 };
+
 exports.send = async (options) => {
   const html = generateHTML(options.filename, options);
   console.log(htmlToText);
