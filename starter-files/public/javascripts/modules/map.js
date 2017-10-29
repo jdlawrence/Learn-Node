@@ -7,11 +7,9 @@ const mapOptions = {
 };
 
 function loadPlaces(map, lat = 43.2, lng = -79.8) {
-  console.log('lat', lat, lng);
   axios.get(`/api/stores/near?lat=${lat}&lng=${lng}`)
     .then(res => {
       const places = res.data;
-      console.log('places', places);
       if (!places.length) {
         alert('no places found');
         return;
@@ -62,7 +60,6 @@ function makeMap(mapDiv) {
   const autocomplete = new google.maps.places.Autocomplete(input);
   autocomplete.addListener('place_changed', () => {
     const place = autocomplete.getPlace();
-    console.log(place.geometry.location.lat(), place.geometry.location.lng());
     loadPlaces(map, place.geometry.location.lat(), place.geometry.location.lng());
   });
 }
