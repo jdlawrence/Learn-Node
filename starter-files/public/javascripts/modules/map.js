@@ -30,7 +30,7 @@ function loadPlaces(map, lat = 43.2, lng = -79.8) {
 
       // When someone clicks on a marker, show the details of that place
       markers.forEach(marker => {
-        marker.addListener('click', function() {
+        marker.addListener('click', function () {
           const html = `
             <div class="popup">
               <a href="/store/${this.place.slug}">
@@ -47,6 +47,9 @@ function loadPlaces(map, lat = 43.2, lng = -79.8) {
       // Then zoom the map to fit all the markers perfectly
       map.setCenter(bounds.getCenter());
       map.fitBounds(bounds);
+    })
+    .catch(err => {
+      console.log('error is up'); 
     });
 }
 
