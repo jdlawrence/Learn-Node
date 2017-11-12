@@ -7,9 +7,6 @@ mixin storeCard(store = {})
             form.heart(method="POST" action=`/api/stores/${store._id}/heart`)
               - const heartStrings = user.hearts.map(obj => obj.toString())
               - const heartClass = heartStrings.includes(store._id.toString()) ? 'heart__button--hearted' : ''
-              pre= h.dump(heartStrings)
-              pre= h.dump(store._id)
-              pre= heartClass
               button.heart__button(type="submit" name="heart" class=heartClass)
                 != h.icon('heart')
         if user && store.author.equals(user._id)

@@ -43,7 +43,7 @@ exports.resize = async (req, res, next) => {
 };
 
 exports.getStoreBySlug = async (req, res, next) => {
-  const store = await Store.findOne({ slug: req.params.slug }).populate('author');
+  const store = await Store.findOne({ slug: req.params.slug }).populate('author reviews');
   if (!store) return next();
   res.render('singleStore', { store });
 };
@@ -83,7 +83,7 @@ exports.updateStore = async (req, res) => {
     runValidators: true // Normally the model only checks the required constraints on new models
   }).exec();
   req.flash('success', [`Successfully updated <strong> ${store.name}<strong>`,
-  `<a href="/store/${store.slug}">View Store → </a>`].join(' '));
+    `<a href="/store/${store.slug}">View Store → </a>`].join(' '));
   res.redirect(`/stores/${store._id}/edit`);
 };
 
