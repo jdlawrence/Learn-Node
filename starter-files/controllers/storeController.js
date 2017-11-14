@@ -83,7 +83,7 @@ exports.updateStore = async (req, res) => {
     runValidators: true // Normally the model only checks the required constraints on new models
   }).exec();
   req.flash('success', [`Successfully updated <strong> ${store.name}<strong>`,
-    `<a href="/store/${store.slug}">View Store → </a>`].join(' '));
+  `<a href="/store/${store.slug}">View Store → </a>`].join(' '));
   res.redirect(`/stores/${store._id}/edit`);
 };
 
@@ -169,4 +169,9 @@ exports.getHearts = async (req, res) => {
     _id: { $in: req.user.hearts }
   });
   res.render('stores', { title: 'Hearted Stores', stores });
+};
+
+exports.getTopStores = async (req, res) => {
+  const stores = await Store.getTopStores();
+  res.render('topStores', { stores, title: '★ Top Stores' });
 };
